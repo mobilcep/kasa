@@ -45,7 +45,15 @@ app.post('/api/kayit', async (req, res) => {
   return res.status(201).json(disaAktar(yeni));
 });
 
-// 2) GET /api/kayitlar — eskiden yeniye
+// 2) GET /api/durum — aktif depo bilgisi (arayüz "veriler kalıcı mı" yazsın)
+app.get('/api/durum', (req, res) => {
+  res.json({
+    depo: depo.ad,
+    kalici: depo.kalici,
+  });
+});
+
+// 3) GET /api/kayitlar — eskiden yeniye
 app.get('/api/kayitlar', (req, res) => {
   const sirali = [...depo.tumunuAl()].sort((a, b) => {
     if (a.tarih !== b.tarih) return a.tarih < b.tarih ? -1 : 1;

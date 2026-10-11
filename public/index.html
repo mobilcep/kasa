@@ -222,7 +222,7 @@ tbody tr:hover{background:#faf8f3}
     </section>
   </div>
 
-  <div class="alt-bilgi">KASA · yerel sunucu · veriler <code>kasa.json</code> dosyasında saklanır</div>
+  <div class="alt-bilgi" id="depoNotu">KASA · gelir gider defteri</div>
 </div>
 
 <script>
@@ -395,6 +395,26 @@ tbody tr:hover{background:#faf8f3}
     ozet();
   }
 
+  /* --- depo durumu (veriler kalıcı mı?) --- */
+  function depoNotuYaz() {
+    var el = $("depoNotu");
+    if (!el) return;
+
+    fetch("/api/durum")
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d.kalici) {
+          el.textContent = "KASA · veriler kalıcı olarak saklanıyor";
+        } else {
+          el.textContent = "KASA · dikkat: bu sunucuda kalıcı depo tanımlı değil, kayıtlar yeniden başlatmada silinebilir";
+          el.style.color = "var(--kirmizi)";
+        }
+      })
+      .catch(function () {
+        el.textContent = "KASA · gelir gider defteri";
+      });
+  }
+
   ayGirdi.addEventListener("change", ozet);
 
   /* --- başlangıç --- */
@@ -403,6 +423,7 @@ tbody tr:hover{background:#faf8f3}
   ayGirdi.value = simdi.getFullYear() + "-" + ikiHane(simdi.getMonth() + 1);
   $("gunNotu").textContent = simdi.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric", weekday: "long" });
   turAyarla("gelir");
+  depoNotuYaz();
   yenile();
 })();
 </script>
