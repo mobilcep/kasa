@@ -9,5 +9,11 @@
   },
   "dependencies": {
     "express": "^4.19.2"
+  },
+  "optionalDependencies": {
+    "redis": "^4.7.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
